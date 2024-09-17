@@ -8,9 +8,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{9546041B-E2C8-45EA-B58B-2DA6454FAFB7}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		Readme.md = Readme.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TesteTodoList.Web", "TesteTodoList.Web", "{38F37C38-7786-4B40-A077-2DDF9D431B7B}"
+	ProjectSection(SolutionItems) = preProject
 		TesteTodoList.Web\app.js = TesteTodoList.Web\app.js
 		TesteTodoList.Web\index.html = TesteTodoList.Web\index.html
-		Readme.md = Readme.md
 		TesteTodoList.Web\styles.css = TesteTodoList.Web\styles.css
 	EndProjectSection
 EndProject
