@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="app.js"></script>
+</head>
+
+
+<body ng-app="todoApp" ng-controller="MainController">
+
+    <!-- Login -->
+    <div ng-if="!isLoggedIn" class="container mt-5">
+        <form class="form-signin" id="loginForm" name="loginForm" ng-submit="login()">
+            <h2 class="form-signin-heading text-center">Login</h2>
+            <div class="form-group">
+                <label for="login">Usuário</label>
+                <input type="text" id="login" name="login" ng-model="loginData.login" class="form-control" required>
+                <div ng-show="loginForm.login.$touched && loginForm.login.$invalid">
+                    <small class="text-danger" ng-show="loginForm.login.$error.required">Usuário é obrigatório.</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" ng-model="loginData.password" class="form-control" required>
+                <div ng-show="loginForm.password.$touched && loginForm.password.$invalid">
+                    <small class="text-danger" ng-show="loginForm.password.$error.required">Senha é obrigatória.</small>
+                </div>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+        </form>
+    </div>
+
+    <!-- Tela de To-do List -->
+    <div ng-if="isLoggedIn" class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>To-do List</h2>
+            <button class="btn btn-success" ng-click="openModal()">Novo To-do</button>
+        </div>
+
+        <!-- Filtro -->
+        <div class="form-inline mb-3">
+            <label for="statusFilter" class="mr-2">Filtrar por status:</label>
+            <select id="statusFilter" class="form-control mr-2" ng-model="statusFilter" ng-change="updateStatusFilter(statusFilter)">
+                <option value="">Todos</option>
+                <option value="0">Pendente</option>
+                <option value="1">Concluído</option>
+            </select>
+        </div>
+
+        <!-- Lista -->
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="todo in todos">
+                    <td>{{ todo.id }}</td>
+                    <td>{{ todo.title }}</td>
+                    <td>{{ todo.description }}</td>
+                    <td>{{ todo.status === 0 ? 'Pendente' : 'Concluído' }}</td>
+                    <td>
+                        <button class="btn btn-info btn-sm mr-1" ng-click="openModal(todo)">Editar</button>
+                        <button class="btn {{ todo.status === 0 ? 'btn-warning' : 'btn-success' }} btn-sm mr-1" ng-click="updateStatus(todo)">
+                            {{ todo.status === 0 ? 'Concluir' : 'Reabrir' }}
+                        </button>
+                        <button class="btn btn-danger btn-sm" ng-click="deleteTodo(todo.id)">Deletar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Paginação -->
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-secondary" ng-click="previousPage()" ng-disabled="currentPage == 0">Anterior</button>
+            <button class="btn btn-secondary" ng-click="nextPage()" ng-disabled="!hasMoreItems">Próximo</button>
+        </div>
+    </div>
+
+    <!-- Modal de Cadastro/Edição -->
+    <div class="modal show" style="display: block;" tabindex="-1" role="dialog" ng-if="isModalOpen">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ isEditing ? 'Editar To-do' : 'Novo To-do' }}</h5>
+                    <button type="button" class="close" ng-click="closeModal()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form name="todoForm" ng-submit="saveTodo()">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="title">Título</label>
+                            <input type="text" id="title" class="form-control" ng-model="modalData.title" required>
+                            <div ng-show="todoForm.title.$touched && todoForm.title.$invalid">
+                                <small class="text-danger" ng-show="todoForm.title.$error.required">Título é obrigatório.</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Descrição</label>
+                            <input type="text" id="description" class="form-control" ng-model="modalData.description" required>
+                            <div ng-show="todoForm.description.$touched && todoForm.description.$invalid">
+                                <small class="text-danger" ng-show="todoForm.description.$error.required">Descrição é obrigatória.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" ng-click="closeModal()">Fechar</button>
+                        <button class="btn btn-primary" type="submit">{{ isEditing ? 'Salvar' : 'Criar' }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

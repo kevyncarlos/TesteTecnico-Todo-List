@@ -1,0 +1,39 @@
+﻿body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    color: #343a40;
+}
+
+.table thead {
+    background-color: #343a40;
+    color: white;
+}
+
+.btn {
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+    .btn:hover {
+        opacity: 0.9;
+    }
+
+.modal-content {
+    border-radius: 10px;
+}
+
+.modal-header, .modal-footer {
+    background-color: #f1f1f1;
+}
+
+    .modal-footer button {
+        border-radius: 10px;
+    }
+
+.text-danger {
+    color: red;
+    font-weight: 800;
+}
